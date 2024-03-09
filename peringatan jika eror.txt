@@ -1,0 +1,63 @@
+<?php 
+
+class Mahasiswa extends CI_Controller {
+	public function index ()
+	{
+		$data['mahasiswa'] = $this->m_mahasiswa->tampil_data()->result();
+		$this->load->view('templates/header');
+		$this->load->view('templates/sidebar');
+		$this->load->view('mahasiswa', $data);
+		$this->load->view('templates/footer');
+	}
+
+	public function tambah_aksi()
+    {
+         $data = [
+            'nama'       => $this->input->post('nama'),
+            'nim'        => $this->input->post('nim'),
+            'tgl_lahir'  => $this->input->post('tgl_lahir'),
+            'jurusan'    => $this->input->post('jurusan'),
+        ];
+        
+        $this->m_mahasiswa->input_data($data, 'tb_mahasiswa');
+        redirect('mahasiswa/index');
+    }
+
+}
+
+====================================================
+====== Isi Model : ====== 
+<?php 
+
+class M_mahasiswa extends CI_Model {
+	public function tampil_data()
+	{
+		return $this->db->get('tb_mahasiswa');
+	}
+
+	public function input_data($data)
+	{
+		$this->db->insert('tb_mahasiswa', $data);
+	}
+}
+
+====================================================
+====== Isi View : ======
+...
+...
+
+<div class="form-group">
+   <label>Tanggal Lahir</label>
+   <input type="date" name="tgl_lahir" class="form-control">
+</div>
+
+<div class="form-group">
+   <label>Jurusan</label>
+	<select type="text" name="jurusan" class="form-control">
+	   <option value=""></option>
+	   <option value="Sistem Informasi">Sistem Informasi</option>
+	   <option value="Teknik Informatika">Teknik Informatika</option>
+	   <option value="Teknik Komputer">Teknik Komputer</option>
+	</select>	        		
+</div>
+
